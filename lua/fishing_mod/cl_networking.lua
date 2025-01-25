@@ -106,12 +106,12 @@ net.Receive("Fishingmod:Catch", function()
 		cooked = FriedToFriendly(fried),
 		value = value,
 	}
-	local text = Format([[This catch is called %s
-and it is %s
-%s caught this
+	local text = Format([[Этот улов называется %s
+и он %s
+%s выловил(-а) его
 {TIME}
-You can sell this catch 
-by pressing reload for $%s.]],
+Вы можете продать этот улов
+нажав кнопку перезарядки за $%s.]],
 	friendly,
 	FriedToFriendly(fried),
 	owner,
@@ -142,7 +142,7 @@ net.Receive("Fishingmod:Bait", function()
 	nameparse = EasyChat and ec_markup.Parse(nameparse):GetText() or UndercorateNick and UndercorateNick(nameparse) or nameparse
 
 	local text = Format([[
-		This bait is owned by %s.
+		Эта наживка принадлежит %s.
 	]],
 	nameparse
 	)
