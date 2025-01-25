@@ -116,6 +116,7 @@ function ENT:Hook( entity, data )
 		
 		entity:SetPos(self:GetPos())
 		entity:SetOwner(self)
+		if entity.CPPISetOwner then entity:CPPISetOwner(ply) end
 		entity:Spawn()
 		
 		if not entity:IsNPC() and not (util.IsValidProp(entity:GetModel():lower()) or util.IsValidRagdoll(entity:GetModel():lower())) then			
