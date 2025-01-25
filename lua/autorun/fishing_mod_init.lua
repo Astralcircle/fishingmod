@@ -7,6 +7,7 @@ if SERVER then
 	AddCSLuaFile("fishing_mod/cl_shop_menu.lua")
 	include("fishing_mod/sv_init.lua")
 	resource.AddFile("sound/fishingrod/reel.wav")
+	resource.AddFile("materials/entities/weapon_fishing_rod.png")
 	
 else
 
