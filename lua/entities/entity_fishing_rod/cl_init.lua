@@ -93,7 +93,7 @@ function ENT:HUDPaint()
 	end
 	bg_heightdepthcatch = 0
 	if self:GetHook() and self:GetHook():WaterLevel() >= 1 then
-		depth = "\nDepth: " .. tostring(math.Round((self:GetDepth() * 2.54) / 100 * 10) / 10) or 0
+		depth = "\nГлубина " .. tostring(math.Round((self:GetDepth() * 2.54) / 100 * 10) / 10) or 0
 		bg_heightdepthcatch = bg_heightdepthcatch + 13
     else
         depth = ""
@@ -108,7 +108,7 @@ function ENT:HUDPaint()
     end
 
 	surface.SetFont("fixed_height_font")
-	local text_below = "Total Catch: " .. ply.fishingmod.catches .. "\nMoney: " .. (math.Round(ply.fishingmod.money) or "0") .. "\nLevel: " .. ply.fishingmod.level .. "\nLength: " .. tostring(math.Round((self:GetLength() * 2.54) / 100 * 10) / 10) .. depth .. catch
+	local text_below = "Общий улов: " .. ply.fishingmod.catches .. "\nДеньги: " .. (math.Round(ply.fishingmod.money) or "0") .. "\nУровень: " .. ply.fishingmod.level .. "\nДлина: " .. tostring(math.Round((self:GetLength() * 2.54) / 100 * 10) / 10) .. depth .. catch
 	box_below_w, box_below_h = surface.GetTextSize(text_below)
 
 	surface.SetFont("fixed_name_font")

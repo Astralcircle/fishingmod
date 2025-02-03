@@ -98,7 +98,7 @@ function ENT:Hook( entity, data )
 		self.dt.hooked = entity
         if entity.PostHook then entity:PostHook(ply, true) end
 		hook.Run("FishingModCaught", ply, entity)
-		if entity.CPPISetOwner then entity:CPPISetOwner(ply) end
+		hook.Run("PlayerSpawnedSENT", ply, entity)
 	else
 		entity = ents.Create(data.type or "")
         if entity.PreHook and entity:PreHook(ply, false) == false then entity:Remove() return end

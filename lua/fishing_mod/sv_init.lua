@@ -81,7 +81,7 @@ concommand.Add("fishing_mod_buy_bait", function(ply, command, arguments)
 			bait:GetPhysicsObject():SetMass(math.min(bait:GetPhysicsObject():GetMass(), 100))
 		end
 
-		hook.Run("PlayerSpawnedProp", ply, bait:GetModel(), bait)
+		hook.Run("PlayerSpawnedSENT", ply, bait)
 
 		if not util.IsValidProp(bait:GetModel():lower()) then bait:PhysicsInitBox(Vector(1, 1, 1 ) * -7,Vector(1, 1, 1) * 7) end
 		
