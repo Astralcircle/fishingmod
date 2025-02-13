@@ -6,7 +6,9 @@ if SERVER then
 	AddCSLuaFile("fishing_mod/cl_networking.lua")
 	AddCSLuaFile("fishing_mod/cl_shop_menu.lua")
 	include("fishing_mod/sv_init.lua")
-	resource.AddFile("sound/fishingrod/reel.wav")
+	
+	--Moved to ClassicBox Misc and Materials
+	--resource.AddFile("sound/fishingrod/reel.wav")
 	
 else
 
