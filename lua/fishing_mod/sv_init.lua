@@ -74,9 +74,12 @@ concommand.Add("fishing_mod_buy_bait", function(ply, command, arguments)
 		bait.data.owner = ply
 		bait.data.ownerid = ply:UniqueID()
 		bait.data.friendly = type
-		bait:SetModel(table.Random(data.models))
+
+		local model = table.Random(data.models)
+		bait:SetModel(util.IsValidProp(model) and model or "models/hunter/blocks/cube025x025x025.mdl")
 		bait:SetPos(util.QuickTrace(ply:GetShootPos(), ply:GetAimVector() * 100, ply).HitPos + Vector(0, 0, 32))
 		bait:Spawn()
+
 		if bait:IsValid() then
 			bait:GetPhysicsObject():SetMass(math.min(bait:GetPhysicsObject():GetMass(), 100))
 		end
