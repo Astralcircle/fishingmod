@@ -63,27 +63,12 @@ local function UpdatePlayer(ply)
 	end
 end
 
-local function UpdatePlayerWait(ply,time)
-	if time<CurTime() then return end
-	if IsValid(ply) and ply:IsPlayer() then
-		ply.fishingmod = ply.fishingmod or {}
-		if ply.fishingmod then
-			--print("Delayed update",ply)
-			UpdatePlayer(ply)
-			return
-		end
-	end
-	timer.Simple(0.5,function() 
-		UpdatePlayerWait(ply,time)
-	end)
-end
-
 net.Receive("Fishingmod:Player", function() 
 	local ply = net.ReadEntity()
-	if not IsValid(ply) or not ply:IsPlayer() or not ply.fishingmod then
-		UpdatePlayerWait(ply,CurTime()+5)
+
+	if ply:IsValid() and ply:IsPlayer() then
+		UpdatePlayer(ply)
 	end
-	UpdatePlayer(ply)
 end)
 
 net.Receive("Fishingmod:Catch", function() 
