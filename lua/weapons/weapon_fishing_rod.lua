@@ -1,5 +1,5 @@
 SWEP.Author = "CapsAdmin"
-SWEP.Category = "Рыбалка"
+SWEP.Category = "Other"
 SWEP.Instructions = "Чтобы размотать, удерживайте ЛКМ\nЧтобы замотать, удерживайте ПКМ\nЧтобы разматывать быстрее, удерживайте SHIFT\nЧтобы разматывать медленее, удерживайте ALT\nЧтобы снять наживку, нажмите E\nЧтобы снять улов, нажмите R\nЧтобы открыть меню, нажмите B"
 SWEP.Spawnable = true 
 SWEP.ViewModel = Model("models/weapons/v_hands.mdl")
