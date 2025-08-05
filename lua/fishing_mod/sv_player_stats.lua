@@ -17,7 +17,7 @@ end
 
 function fishingmod.LoadPlayerInfo(ply)
 	local info = sql.QueryTyped("SELECT catches, exp, money, length, reel_speed, string_length, force FROM fishingmod_data WHERE steamid = ? LIMIT 1", ply:SteamID64())
-	return info[1]
+	return info[1] or {}
 end
 
 function fishingmod.GainEXP(ply, amount)
