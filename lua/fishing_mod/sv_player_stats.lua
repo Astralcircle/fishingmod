@@ -102,17 +102,6 @@ function fishingmod.SetHookForce(ply, force, add_or_sub)
 	fishingmod.UpdatePlayerInfo(ply)
 end
 
-sql.Query([[CREATE TABLE IF NOT EXISTS fishingmod_data (
-	steamid INTEGER PRIMARY KEY,
-	catches INTEGER,
-	exp INTEGER,
-	money INTEGER,
-	length INTEGER,
-	reel_speed INTEGER,
-	string_length INTEGER,
-	force INTEGER
-)]])
-
 function fishingmod.InitPlayerStats(ply)
 	if not IsValid(ply) then return end
 
