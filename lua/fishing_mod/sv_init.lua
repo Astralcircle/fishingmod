@@ -8,7 +8,7 @@ if badges then
 	badges.CreateBadge("fishingmod_firstcatch", "Fishingmod: Начало карьеры", "Выловите и продайте свой первый улов")
 	badges.CreateBadge("fishingmod_seagullfail", "Fishingmod: Не в мою смену!", "Не позвольте чайке украсть ваш улов")
 	badges.CreateBadge("fishingmod_upgrademax", "Fishingmod: Предельная эффективность", "Улучшите свою удочку до максимального уровня в любой категории")
-	badges.CreateBadge("fishingmod_upgrademax", "Fishingmod: Моя прелесть!", "Выловите алмаз")
+	badges.CreateBadge("fishingmod_diamond", "Fishingmod: Моя прелесть!", "Выловите алмаз")
 	badges.CreateBadge("fishingmod_upgrade", "Fishingmod: Обновка!", "Улучшите свою удочку")
 	badges.CreateBadge("fishingmod_cook", "Fishingmod: Шев повар", "Приготовьте свой улов на выловленной плите и продайте его")
 end
