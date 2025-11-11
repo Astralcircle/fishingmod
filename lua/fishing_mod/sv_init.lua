@@ -215,8 +215,11 @@ end
 function fishingmod.Sell(ply, entity, value)
 	if player.GetByUniqueID(entity.data.ownerid) ~= ply then return end
 	if entity.PreSell and entity:PreSell(ply, value) == false then return false end
-	if entity.data.fried and entity.data.fried > 0 then ply:AddBadge("fishingmod_cook") end
-	ply:AddBadge("fishingmod_firstcatch")
+
+	if badges then
+		if entity.data.fried and entity.data.fried > 0 then ply:AddBadge("fishingmod_cook") end
+		ply:AddBadge("fishingmod_firstcatch")
+	end
 
 	fishingmod.GiveMoney(ply, value or 0)
 	ply:EmitSound("ambient/levels/labs/coinslot1.wav", 100, math.random(90, 110))
