@@ -4,7 +4,6 @@ include("sv_networking.lua")
 include("sv_player_stats.lua")
 include("sv_upgrades.lua")
 
-
 hook.Add("Initialize", "Fishingmod_Badges", function()
 	if badges then
 		badges.CreateBadge("fishingmod_firstcatch", "Fishingmod: Начало карьеры", "Выловите и продайте свой первый улов")
@@ -360,5 +359,6 @@ end)
 hook.Add("InitPostEntity", "FishingMod:SetSales", function()
 	fishingmod.SetRandomSale()
 end)
+
 
 
