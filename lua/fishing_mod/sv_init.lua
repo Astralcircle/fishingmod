@@ -4,8 +4,9 @@ include("sv_networking.lua")
 include("sv_player_stats.lua")
 include("sv_upgrades.lua")
 
-if badges then
-	hook.Add("Initialize", "Fishingmod_Badges", function()
+
+hook.Add("Initialize", "Fishingmod_Badges", function()
+	if badges then
 		badges.CreateBadge("fishingmod_firstcatch", "Fishingmod: Начало карьеры", "Выловите и продайте свой первый улов")
 		badges.CreateBadge("fishingmod_seagullfail", "Fishingmod: Не в мою смену!", "Не позвольте чайке украсть ваш улов")
 		badges.CreateBadge("fishingmod_dollkiller", "Fishingmod: Куклоубийца", "Убейте проклятую куклу!")
@@ -13,8 +14,8 @@ if badges then
 		badges.CreateBadge("fishingmod_diamond", "Fishingmod: Моя прелесть!", "Выловите алмаз")
 		badges.CreateBadge("fishingmod_upgrade", "Fishingmod: Обновка!", "Улучшите свою удочку")
 		badges.CreateBadge("fishingmod_cook", "Fishingmod: Шев повар", "Приготовьте свой улов на выловленной плите и продайте его")
-	end)
-end
+	end
+end)
 
 function fishingmod.SetData(entity, data)
 	entity.data = data
@@ -359,4 +360,5 @@ end)
 hook.Add("InitPostEntity", "FishingMod:SetSales", function()
 	fishingmod.SetRandomSale()
 end)
+
 
