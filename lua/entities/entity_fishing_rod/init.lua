@@ -4,15 +4,20 @@ include("shared.lua")
 
 function ENT:Initialize()
 	self:SetModel("models/props_junk/harpoon002a.mdl")
-	self:PhysicsInit( SOLID_VPHYSICS )
-	self:SetMoveType( MOVETYPE_VPHYSICS )
-	self:SetSolid( SOLID_VPHYSICS )
-	self:StartMotionController()
+	self:PhysicsInit(SOLID_VPHYSICS)
+
 	local phys = self:GetPhysicsObject()
+
 	if phys:IsValid() then
 		phys:SetMass(100)
 		phys:Wake()
 	end
+
+	timer.Simple(0, function()
+		if self:IsValid() then
+			self:StartMotionController()
+		end
+	end)
 
 	self.shadow_params = {}
 	
