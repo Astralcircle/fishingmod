@@ -118,7 +118,6 @@ function PANEL:Init()
 		pres = fishingmod.ColorTable.ui_button_pressed or pres
 	end
 	self:MakePopup()
-	self:SetDeleteOnClose(false)
 	self:SetSizable(true)
 	self:SetTitle("Рыбалка")
 	self.lblTitle:SetTextColor(ui_text)
@@ -127,9 +126,9 @@ function PANEL:Init()
 	self:Center()
 
 	self.baitshop = vgui.Create("Fishingmod:BaitShop", self)
-	
+
 	fishingmod.BaitIcons = self.baitshop:GetItems()
-	
+
 	self.upgrade = vgui.Create("Fishingmod:Upgrade", self)
 
 	self.customization = vgui.Create("Fishingmod:Customization", self)
@@ -226,7 +225,7 @@ function PANEL:Init()
 
 	customization_button:SetPos(margin + (xpx - margin * 2) / margin, 24) -- baits shop start of conf
 	customization_button:SetSize((xpx - margin * 2) / margin, 22)
-	
+
 	function customization_button.Think()
 		xpx, xpy = self:GetSize()
 		if xpx % margin == 2 then -- odd widths
@@ -308,20 +307,20 @@ function PANEL:Init()
 		end
 		surface.DrawRect(0, 0, w, h)
 	end
-	
+
 	function self.baitshop:Paint()
 		surface.SetDrawColor(background.r, background.g, background.b, background.a)
 		surface.DrawRect(0, 0, self:GetWide(), self:GetTall())
 		return true
 	end
-	
+
 	fishingmod.UpdateSales()
 end
 
 vgui.Register( "Fishingmod:ShopMenu", PANEL, "DFrame" )
 
 
--- Upgrade Tab 
+-- Upgrade Tab
 local PANEL = {}
 
 function PANEL:Init()
@@ -344,37 +343,37 @@ function PANEL:Init()
 	self.money = vgui.Create("DLabel", self)
 	self.money:SetTextColor(ui_text)
 	self.money.Think = function(self) self:SetText("Деньги: " .. math.Round(LocalPlayer().fishingmod.money)) end
-	
+
 	self:AddItem(self.money)
-	
+
 	self.length = vgui.Create("Fishingmod:UpgradeButton", self)
 	self.length:SetType("Размер удочки:", "length", "rod_length", fishingmod.RodLengthPrice)
 
 	self:AddItem(self.length)
-	
+
 	self.stringlength = vgui.Create("Fishingmod:UpgradeButton", self)
 	self.stringlength:SetType("Длина лески:", "string_length", "string_length", fishingmod.StringLengthPrice)
 
 	self:AddItem(self.stringlength)
-	
+
 	self.reelspeed = vgui.Create("Fishingmod:UpgradeButton", self)
 	self.reelspeed:SetType("Скорость катушки:", "reel_speed", "reel_speed", fishingmod.ReelSpeedPrice)
 	self:AddItem(self.reelspeed)
-	
+
 	self.force = vgui.Create("Fishingmod:UpgradeButton", self)
 	self.force:SetType("Сила крюка:", "force", "hook_force", fishingmod.HookForcePrice)
 	self:AddItem(self.force)
 end
 
 vgui.Register("Fishingmod:Upgrade", PANEL, "DPanelList")
-	
-	
-	
+
+
+
 -- Bait Shop tab
 local PANEL = {}
 
 function PANEL:Init()
-	
+
 	local x, y = self:GetParent():GetSize()
 	self:SetSize(x - margin * 2, y - margin - 46)
 	function self:Think()
@@ -407,9 +406,9 @@ function PANEL:Init()
 		icon:SetModel(data.model)
 		icon:SetToolTip("This bait cost " .. data.price .. " and\nit is a_ level " .. data.levelrequired .. " bait.")
 		icon:SetSize(58, 58)
-		
+
 		fishingmod.BaitTable[data.name].icon = icon
-		
+
 		if(level < data.levelrequired) then
 			icon:SetGray(true)
 		else
@@ -419,7 +418,7 @@ function PANEL:Init()
 		end
 		self:AddItem(icon)
 	end
-		
+
 end
 
 vgui.Register("Fishingmod:BaitShop", PANEL, "DPanelList")
@@ -482,7 +481,7 @@ function PANEL:Init()
 			chat.AddText(col_green, "[Рыбалка]", col_white, ": Цвета сброшены до стандартных!")
 		end
 	end
-	
+
 	local combo_box = vgui.Create("DComboBox", self )
 	combo_box:SetPos(10, 10)
 	combo_box:SetSize(120, 30)
@@ -524,7 +523,7 @@ function PANEL:Init()
 			end
 		end
 	end
-	
+
 	function save_button:Paint(w, h)
 		save_button:SetTextColor(ui_text)
 		if(save_button:IsDown()) then
@@ -568,7 +567,7 @@ vgui.Register("Fishingmod:Customization", PANEL, "DPanelList")
 
 
 ------------- Helper components --------------
-	
+
 -- Upgrade button
 local PANEL = {}
 
@@ -579,21 +578,21 @@ function PANEL:Init()
 	self.left.DoClick = function()
 		RunConsoleCommand("fishingmod_downgrade_"..self.command, "1")
 	end
-	
+
 	self.right = vgui.Create("DButton", self)
 	self.right:SetSize(24, 20)
 	self.right.DoClick = function()
 		RunConsoleCommand("fishingmod_upgrade_"..self.command, "1")
 	end
-	
+
 	self.rightlabel = vgui.Create("DLabel", self)
 	self.rightlabel:SetTextColor(ui_text)
 	self.rightlabel:SetSize(100, 30)
-	
+
 	self.leftlabel = vgui.Create("DLabel", self)
 	self.leftlabel:SetTextColor(ui_text)
 	self.leftlabel:SetSize(100, 30)
-	
+
 	self.left:Dock(LEFT)
 	self.leftlabel:SetPos(30, - 2)
 	self.rightlabel:SetPos(130, - 2)
@@ -687,11 +686,11 @@ function fishingmod.UpdateSales()
 		local levelrequired = fishingmod.CatchTable[key].levelrequired
 		local saleprice = math.Round(bait.price * bait.multiplier)
 		local sale = "Эта наживка сейчас стоит " .. math.Round(bait.price * bait.multiplier) .. "!\nЕё ориганальная цена " .. bait.price .. "."
-		
+
 		if saleprice == 0 then
 			sale = "Эта наживка бесплатная! "
 		end
-		
+
 		if IsValid(bait.icon) then
 			bait.icon:SetToolTip(sale .. "\nВам нужен уровен " .. levelrequired .. " или выше чтобы использовать эту наживку.")
 			bait.icon:SetSale(bait.multiplier)

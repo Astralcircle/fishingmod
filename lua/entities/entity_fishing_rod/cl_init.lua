@@ -44,16 +44,16 @@ end
 
 function ENT:RenderScene()
 	local ply = self:GetPlayer()
-	
+
 	if ply then
 		ply:SetAngles(Angle(0,ply:EyeAngles().y,0))
 	end
-	
+
 	if not IsValid(self.dt.ply) then return end
-	
+
 	local idx = self.dt.ply:LookupBone("ValveBiped.Bip01_R_Hand")
 	if not idx then return end
-	
+
 	local position, angles = self.dt.ply:GetBonePosition(idx)
 	local new_position, new_angles = LocalToWorld(Vector(26.5-(self.dt.rod_length/13),-0.17,-44) * self.dt.rod_length, Angle(60,0,90), position, angles)
 	self:SetPos(new_position)
@@ -73,22 +73,22 @@ function ENT:HUDPaint()
 		xp_bar_text = fishingmod.ColorTable.xp_bar_text or xp_bar_text
 	end
 
-	
+
 	if not IsValid(ply) or (ply and not ply.fishingmod) then return end
 	if ply ~= LocalPlayer() and self:GetHook() and self:GetHook():GetPos():Distance(LocalPlayer():EyePos()) > 1500 then return end
-		
+
 	xy = ((self:GetBobber() and self:GetBobber():GetPos() or Vector()) + Vector(0,0,10)):ToScreen() -- kinda unsure about this Vec'0,0,+10'
-	
+
 	temp_nick = ply:Nick()
 	team_col = team.GetColor(ply:Team())
 
-	if EasyChat then 
+	if EasyChat then
 		markup = ec_markup.AdvancedParse(temp_nick, {
 			nick = true,
 			default_color = team_col,
 			default_font = "fixed_name_font",
 			default_shadow_font = "fixed_name_font",
-		}) 
+		})
 		stripped_name_width = markup:GetWidth()
 	end
 	bg_heightdepthcatch = 0
@@ -113,7 +113,7 @@ function ENT:HUDPaint()
 
 	surface.SetFont("fixed_name_font")
 	xhypo, yhypo = surface.GetTextSize(temp_nick)
-	
+
 	xy.y = math.Clamp(xy.y - height_offset, 120 + height_offset + margin_from_border, ScrH() + height_offset - margin_from_border - bg_heightdepthcatch)
 
 	bg_x, bg_width = xy.x - math.max(minwid, xhypo / 2, box_below_w / 2) - 10, (math.max(minwid, xhypo / 2, box_below_w / 2) + 10) * 2
@@ -141,52 +141,37 @@ function ENT:Initialize()
 	self.sound_rope = CreateSound(self, "weapons/tripwire/ropeshoot.wav")
 	self.sound_rope:Play()
 	self.sound_rope:ChangePitch(0, 0)
-	
+
 	self.sound_reel = CreateSound(self, "fishingrod/reel.wav")
 	self.sound_reel:Play()
 	self.sound_reel:ChangePitch(0, 0)
 	self.last_length = 0
-	
-	local ply = self:GetPlayer()
-	
-	if LocalPlayer() == ply and not ValidPanel(fishingmod.UpgradeMenu) then 
-		fishingmod.UpgradeMenu = vgui.Create("Fishingmod:ShopMenu") 
-		fishingmod.UpgradeMenu:SetVisible(false)
-	end
-	
+
 	self:SetupHook("RenderScene")
 	self:SetupHook("HUDPaint")
 end
- 
-function ENT:Think()	
+
+function ENT:Think()
 	local delta = self.dt.length - self.last_length
 
 	local velocity_length = IsValid(self.dt.attach) and self.dt.attach:GetVelocity():Length() or 0
 	local pitch = velocity_length/10 - 0.1
 	local volume = velocity_length/1000 - 0.1
 	local reel_velocity = self.dt.length - self.last_length
-	
+
 	local on = (delta ~= 0) and 1 or 0
 	self.sound_reel:ChangePitch(math.Clamp(math.abs(100+delta*10),80,200), 0)
 	self.sound_reel:ChangeVolume(on, 0)
-		
+
 	self.sound_rope:ChangePitch(math.Clamp(pitch, 50, 255), 0)
 	self.sound_rope:ChangeVolume(math.Clamp(volume, 0, 1), 0)
-	
+
 	self.last_length = self.dt.length
 	self:NextThink(CurTime())
 	return true
 end
 
 function ENT:OnRemove()
-	local ply = self:GetPlayer()
-	
-	if LocalPlayer() == ply then 
-		if IsValid(fishingmod.UpgradeMenu) then
-			fishingmod.UpgradeMenu:Remove()
-		end
-	end
-
 	self.sound_reel:Stop()
 	self.sound_rope:Stop()
 end

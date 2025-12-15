@@ -6,15 +6,17 @@ if SERVER then
 	AddCSLuaFile("fishing_mod/cl_networking.lua")
 	AddCSLuaFile("fishing_mod/cl_shop_menu.lua")
 	include("fishing_mod/sv_init.lua")
-	
+
 	--Moved to ClassicBox Misc and Materials
 	--resource.AddFile("sound/fishingrod/reel.wav")
-	
+
 else
 
 	include("fishing_mod/cl_init.lua")
-	concommand.Add("fishing_mod_menu", function() 
-		fishingmod.UpgradeMenu = vgui.Create('Fishingmod:ShopMenu') fishingmod.UpgradeMenu:SetVisible(true) 
+	concommand.Add("fishing_mod_menu", function()
+		if not IsValid(fishingmod.UpgradeMenu) then
+			fishingmod.UpgradeMenu = vgui.Create('Fishingmod:ShopMenu')
+		end
 	end)
 
 end
