@@ -4,9 +4,16 @@ function fishingmod.UpgradeRodLength(ply, amount)
 	if ply.fishingmod.length + amount > fishingmod.MaxRodLength then return end --50 is the maximum rod length allowed
 	local cost = amount * fishingmod.RodLengthPrice --10 is the price per unit
 	if cost > ply.fishingmod.money then return end
-	if badges then ply:AddBadge("fishingmod_upgrade") end
 	fishingmod.TakeMoney(ply, cost)
 	fishingmod.SetRodLength(ply, amount, "add")
+
+	if badges then
+		if ply.fishingmod.length >= fishingmod.MaxRodLength then
+			ply:AddBadge("fishingmod_upgrademax")
+		end
+
+		ply:AddBadge("fishingmod_upgrade")
+	end
 end
 
 function fishingmod.DowngradeRodLength(ply, amount)
@@ -28,9 +35,16 @@ end)
 function fishingmod.UpgradeStringLength(ply, amount)
 	local cost = amount * fishingmod.StringLengthPrice
 	if cost > ply.fishingmod.money then return end
-	if badges then ply:AddBadge("fishingmod_upgrade") end
 	fishingmod.TakeMoney(ply, cost)
 	fishingmod.SetRodStringLength(ply, amount, "add")
+
+	if badges then
+		if ply.fishingmod.string_length >= 50 then
+			ply:AddBadge("fishingmod_upgrademax")
+		end
+
+		ply:AddBadge("fishingmod_upgrade")
+	end
 end
 
 function fishingmod.DowngradeStringLength(ply, amount)
@@ -53,9 +67,16 @@ function fishingmod.UpgradeReelSpeed(ply, amount)
 	local cost = amount * fishingmod.ReelSpeedPrice
 	if ply.fishingmod.reel_speed + amount > fishingmod.MaxReelSpeed then return end
 	if cost > ply.fishingmod.money then return end
-	if badges then ply:AddBadge("fishingmod_upgrade") end
 	fishingmod.TakeMoney(ply, cost)
 	fishingmod.SetRodReelSpeed(ply, amount, "add")
+
+	if badges then
+		if ply.fishingmod.reel_speed >= fishingmod.MaxReelSpeed then
+			ply:AddBadge("fishingmod_upgrademax")
+		end
+
+		ply:AddBadge("fishingmod_upgrade")
+	end
 end
 
 function fishingmod.DowngradeReelSpeed(ply, amount)
@@ -77,9 +98,16 @@ end)
 function fishingmod.UpgradeHookForce(ply, amount)
 	local cost = amount * fishingmod.HookForcePrice
 	if cost > ply.fishingmod.money then return end
-	if badges then ply:AddBadge("fishingmod_upgrade") end
 	fishingmod.TakeMoney(ply, cost)
 	fishingmod.SetHookForce(ply, amount, "add")
+
+	if badges then
+		if ply.fishingmod.force >= 50 then
+			ply:AddBadge("fishingmod_upgrademax")
+		end
+
+		ply:AddBadge("fishingmod_upgrade")
+	end
 end
 
 function fishingmod.DowngradeHookForce(ply, amount)
