@@ -24,10 +24,17 @@ end
 
 function ENT:StartTouch(entity)
 	if fishingmod.IsBait(entity) then
-		self:HookBait(entity)
+		timer.Simple(0, function()
+			if not self:IsValid() or not entity:IsValid() then return end
+			self:HookBait(entity)
+		end)
 	end
+
 	if self.bobber.rod then
-		fishingmod.HookBait(self.bobber.rod:GetPlayer(), entity)
+		timer.Simple(0, function()
+			if not self:IsValid() or not self.bobber or not self.bobber.rod or not entity:IsValid() then return end
+			fishingmod.HookBait(self.bobber.rod:GetPlayer(), entity)
+		end)
 	end
 end
 
