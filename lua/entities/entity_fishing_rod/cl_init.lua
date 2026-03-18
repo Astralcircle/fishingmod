@@ -64,6 +64,16 @@ end
 
 function ENT:HUDPaint()
 	local ply = self:GetPlayer()
+	if not IsValid(ply) or not ply.fishingmod then return end
+
+	if ply ~= LocalPlayer() then
+		local rod_hook = self:GetHook()
+
+		if not IsValid(rod_hook) or rod_hook:GetPos():Distance(EyePos()) > 1500 then
+			return
+		end
+	end
+
 	if fishingmod.ColorTable then
 		ui_text = fishingmod.ColorTable.ui_text or ui_text
 		ui_text_caught = fishingmod.ColorTable.ui_text_caught or ui_text_caught
@@ -72,10 +82,6 @@ function ENT:HUDPaint()
 		xp_bar_bg = fishingmod.ColorTable.xp_bar_bg or xp_bar_bg
 		xp_bar_text = fishingmod.ColorTable.xp_bar_text or xp_bar_text
 	end
-
-
-	if not IsValid(ply) or (ply and not ply.fishingmod) then return end
-	if ply ~= LocalPlayer() and self:GetHook() and self:GetHook():GetPos():Distance(LocalPlayer():EyePos()) > 1500 then return end
 
 	xy = ((self:GetBobber() and self:GetBobber():GetPos() or Vector()) + Vector(0,0,10)):ToScreen() -- kinda unsure about this Vec'0,0,+10'
 
