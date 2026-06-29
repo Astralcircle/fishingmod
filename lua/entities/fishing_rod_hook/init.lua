@@ -24,10 +24,17 @@ end
 
 function ENT:StartTouch(entity)
 	if fishingmod.IsBait(entity) then
-		self:HookBait(entity)
+		timer.Simple(0, function()
+			if not self:IsValid() or not entity:IsValid() then return end
+			self:HookBait(entity)
+		end)
 	end
+
 	if self.bobber.rod then
-		fishingmod.HookBait(self.bobber.rod:GetPlayer(), entity)
+		timer.Simple(0, function()
+			if not self:IsValid() or not self.bobber or not self.bobber.rod or not entity:IsValid() then return end
+			fishingmod.HookBait(self.bobber.rod:GetPlayer(), entity)
+		end)
 	end
 end
 
@@ -98,7 +105,7 @@ function ENT:Hook( entity, data )
 		self.dt.hooked = entity
         if entity.PostHook then entity:PostHook(ply, true) end
 		hook.Run("FishingModCaught", ply, entity)
-		if entity.CPPISetOwner then entity:CPPISetOwner(ply) end
+		hook.Run("PlayerSpawnedSENT", ply, entity)
 	else
 		entity = ents.Create(data.type or "")
         if entity.PreHook and entity:PreHook(ply, false) == false then entity:Remove() return end

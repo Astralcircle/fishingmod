@@ -2,10 +2,10 @@
 fishingmod.AddCatch{
 	friendly = "Stove",
 	type = "fishing_mod_catch_stove",
-	rareness = 2500, 
-	yank = 1000, 
-	force = 0, 
-	mindepth = 0, 
+	rareness = 2500,
+	yank = 1000,
+	force = 0,
+	mindepth = 0,
 	value = 600,
 	maxdepth = 20000,
 	expgain = 150,
@@ -42,13 +42,13 @@ if CLIENT then
 		self.sound = CreateSound(self, "ambient/fire/fire_small_loop2.wav")
 		self.sound:SetSoundLevel(0)
 		self.sound:PlayEx(0,100)
-		
-		timer.Simple(0.1,function() 
+
+		timer.Simple(0.1,function()
 			self.sound:Stop()
-			self.sound:SetSoundLevel(70) 
-			self.sound:PlayEx(0,100) 
+			self.sound:SetSoundLevel(70)
+			self.sound:PlayEx(0,100)
 		end)
-		
+
 		self.stoves = {}
 		for key, data in pairs(self.storage) do
 			if key == 1 or key == 2 then
@@ -72,15 +72,15 @@ if CLIENT then
 			self.stoves[key]:SetParent(self)
 		end
 	end
-	
+
 	function ENT:OnRemove()
 		self.sound:Stop()
 		for key, stove in pairs(self.stoves) do
 			stove:Remove()
 		end
 	end
-	
-	local smoke = { 
+
+	local smoke = {
 		"particle/smokesprites_0001",
 		"particle/smokesprites_0002",
 		"particle/smokesprites_0003",
@@ -99,18 +99,18 @@ if CLIENT then
 	}
 
 	local heat = CreateClientConVar("fishingmod_stove_heat", 50, true, true)
-	
+
 	local function RandomSphere()
 		return Angle(math.Rand(-180,180),math.Rand(-180,180),math.Rand(-180,180)):Forward()
 	end
 
 	function ENT:Draw()
 		for key, data in pairs(self.storage) do
-			local smoke = self.emitter:Add( 
-				table.Random(smoke), 
-					self:GetPos() + 
-					( self:GetUp() * data.position.z ) + 
-					( self:GetRight() * data.position.x ) + 
+			local smoke = self.emitter:Add(
+				table.Random(smoke),
+					self:GetPos() +
+					( self:GetUp() * data.position.z ) +
+					( self:GetRight() * data.position.x ) +
 					( self:GetForward() * data.position.y)
 			)
 			if smoke then
@@ -129,7 +129,7 @@ if CLIENT then
 				smoke:SetBounce(0.2)
 			end
 		end
-		
+
 		self:DrawModel()
 		self.sound:ChangeVolume(self.dt.heat/100, 0)
 		render.SetMaterial( sprite )
@@ -155,7 +155,7 @@ if CLIENT then
 		end
 		local frame = vgui.Create("DFrame")
 		frame.Paint = function(s, x, y)
-			
+
 			surface.SetDrawColor(background.r, background.g, background.b, background.a)
 			surface.DrawRect(0, 0, x, y)
 			surface.DrawRect(margin, 24, x - margin * 2, y - 24 - margin)
@@ -172,7 +172,7 @@ if CLIENT then
 			frame:Close()
 		end
 		close_button.Paint = function(self, w, h)
-			
+
 			if(close_button:IsDown() ) then
 				surface.SetDrawColor(button_not_selected.r, button_not_selected.g, button_not_selected.b, button_not_selected.a)
 			elseif(close_button:IsHovered()) then
@@ -193,7 +193,7 @@ if CLIENT then
 
 		frame:MakePopup()
 		frame:SetTitle("Stove Heat")
-		
+
 		local slider = vgui.Create("DNumSlider", frame)
 		slider:SetPos(15, 35)
 		slider:SetWide(285)
@@ -204,17 +204,17 @@ if CLIENT then
 		slider.Label:SetTextColor(ui_text)
 		slider.Wang.m_Skin.colTextEntryText = ui_text
 	end
-	
-	
-	
+
+
+
 	usermessage.Hook("FishingMod:Stove", function(umr)
 		local entity = umr:ReadEntity()
-		
+
 		if not IsValid(entity) then return end
-		
+
 		entity:ShowHeatAdjuster()
 	end)
-	
+
 else
 	function ENT:Initialize()
 		self:SetModel( "models/props_c17/furnitureStove001a.mdl" )
@@ -225,14 +225,14 @@ else
 		self:PhysWake()
 		self.smoothheat = 1
 	end
-	
+
 	function ENT:PreSell(ply)
 		--[[ if self.cvarheat ~= 0 then
 			ply:ChatPrint("The stove's heat needs to be 0 for you to sell it!")
 			return false
 		end ]]
 	end
-	
+
 	function ENT:Use(ply)
 		if player.GetByUniqueID(self.data.ownerid) == ply then
 			umsg.Start("FishingMod:Stove", ply)
@@ -242,44 +242,44 @@ else
 			self.data.owner = ply
 		end
 	end
-	
+
 	function ENT:Think()
 		local owner = self.data.owner
 		local cvar = IsValid(owner) and owner:GetInfoNum("fishingmod_stove_heat", 0) or 0
 		self.cvarheat = cvar
-		local heat = math.Clamp(cvar * -1 + 100, 0, 100)		
-		
+		local heat = math.Clamp(cvar * -1 + 100, 0, 100)
+
 		self.smoothheat = self.smoothheat + ((heat - self.smoothheat) / 1000)
-		
+
 		self.dt.heat = self.smoothheat * -1 + 100
-		
+
 		for key, data in pairs(self.storage) do
-		
+
 			local catch = data.item
-			
+
 			catch = IsValid(catch) and IsValid(catch:GetNWEntity("FMRedirect")) and catch:GetNWEntity("FMRedirect") or catch
-				
-			if catch and #constraint.FindConstraints(catch) == 0 then 
+
+			if IsValid(catch) and #constraint.FindConstraints(catch) == 0 then
 				catch.shelf_stored = nil
 				self.storage[key].item = nil
 			end
-			
-			if catch and cvar > 0 then			
+
+			if IsValid(catch) and cvar > 0 then
 				if catch:IsOnFire() then catch.data.fried = 1000 end
-								
+
 				catch.data.fried = catch.data.fried or 0
 				catch.data.fried = math.Clamp(catch.data.fried + (catch.data.fried * self.dt.heat / 700), 1, 1000)
-				
---[[ 				if (lastprint or 0) < CurTime() then 
+
+--[[ 				if (lastprint or 0) < CurTime() then
 					print(catch.data.fried, self.smoothheat)
 					print(key, catch)
 					lastprint = CurTime() + 0.2
 				end ]]
-				
+
 				if catch.data.fried == 1000 and not catch:IsOnFire() then catch:Ignite(1000) end
 
 				catch:SetColor(fishingmod.FriedToColor(catch.data.fried))
-				
+
 				if (catch.last_sent or 0) < CurTime() then
 					catch.data.originalvalue = catch.data.originalvalue or catch.data.value or 0
 					catch.data.value = math.max(catch.data.originalvalue * fishingmod.FriedToMultiplier(catch.data.fried), 1)
@@ -288,26 +288,26 @@ else
 				end
 			end
 		end
-	
+
 		if (self.next_search or 0) < CurTime() then
-		
+
 			for key, entity in pairs( ents.FindInBox( self:GetPos() + self:OBBMins(), self:GetPos() + self:OBBMaxs() * Vector(1, 1, 1.2) ) ) do
 				if entity.data and entity ~= self and not entity.shelf_stored and entity:GetClass() ~= "fishing_mod_catch_stove" and not entity.is_bait then
 					self:AddItem( entity )
 				end
 			end
-			
+
 			self.next_search = CurTime() + 1
 		end
-		
+
 		self:NextThink(CurTime())
 		return true
 	end
 
 	function ENT:AddItem( entity )
-	
+
 		local closest = {distance = 200}
-		
+
 		for key, value in pairs( self.storage ) do
 			if not value.shelf_stored then
 				local distance = entity:GetPos():Distance( self:GetPos() + ( self:GetUp() * value.position.z ) + ( self:GetRight() * value.position.x ) + ( self:GetForward() * value.position.y ) )
@@ -317,14 +317,14 @@ else
 				end
 			end
 		end
-		
+
 		if closest.index then
 			local index, data = closest.index, self.storage[closest.index]
-			
+
 			entity.weld_broke = false
 
 			entity.shelf_stored = true
-								
+
 			timer.Simple(0.1, function()
 				if IsValid(self) and IsValid(entity) then
 					local isragdoll = entity:GetClass() == "prop_ragdoll" or entity.is_ragdoll or false
@@ -338,9 +338,9 @@ else
 				end
 			end)
 		end
-		
+
 	end
-	
+
 end
 
 scripted_ents.Register(ENT, "fishing_mod_catch_stove", true)

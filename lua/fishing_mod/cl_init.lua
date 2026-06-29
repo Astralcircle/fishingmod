@@ -58,20 +58,20 @@ end
 
 hook.Add("InitPostEntity", "Init Fish Mod", function()
 	RunConsoleCommand("fishing_mod_request_init")
-	
+
 	FMOldCalcVehicleThirdPersonView = FMOldCalcVehicleThirdPersonView or GAMEMODE.CalcVehicleThirdPersonView
 
 	function GAMEMODE:CalcVehicleThirdPersonView(vehicle, ply, position, angles, fov)
 		if ply:GetFishingRod() and IsValid(ply:GetNWEntity("weapon seat")) then
 			local view = {}
-			view.origin = ply:GetShootPos() + 
-				(ply:EyeAngles():Right() * 50) + 
-				(Angle(0, ply:EyeAngles().y, 0):Forward() * -150) + 
+			view.origin = ply:GetShootPos() +
+				(ply:EyeAngles():Right() * 50) +
+				(Angle(0, ply:EyeAngles().y, 0):Forward() * -150) +
 				(Angle(0, 0, ply:EyeAngles().z):Up() * 20)
-			
-			
-			view.angles = Angle(math.Clamp(ply:EyeAngles().p -30, -70, 15), ply:EyeAngles().y, 0)		
-			
+
+
+			view.angles = Angle(math.Clamp(ply:EyeAngles().p -30, -70, 15), ply:EyeAngles().y, 0)
+
 			return view
 		end
 		return FMOldCalcVehicleThirdPersonView(self, vehicle, ply, position, angles, fov)
@@ -83,7 +83,7 @@ local bg = fishingmod.DefaultUIColors().ui_background
 local crosshair = fishingmod.DefaultUIColors().crosshair_color
 hook.Add( "HUDPaint", "Fishingmod:HUDPaint", function()
 	local entity = LocalPlayer():GetEyeTrace().Entity
-	if fishingmod.ColorTable then 
+	if fishingmod.ColorTable then
 		crosshair = fishingmod.ColorTable.crosshair_color or fishingmod.DefaultUIColors().crosshair_color
 		ui_text = fishingmod.ColorTable.ui_text or fishingmod.DefaultUIColors().ui_text
 		bg = fishingmod.ColorTable.ui_background or fishingmod.DefaultUIColors().ui_background
@@ -94,7 +94,7 @@ hook.Add( "HUDPaint", "Fishingmod:HUDPaint", function()
 		local text_height, text_width = 0, 0
 		xy.y = math.min(math.max(64, xy.y), ScrH() - 64)
 		local pad = 3
-			
+
 		if IsValid(entity) and (entity:GetPos() - LocalPlayer():GetShootPos()):Length() < 120 then
 			local data = fishingmod.InfoTable.Catch[entity:EntIndex()]
 			if data and data.text then
@@ -108,7 +108,7 @@ hook.Add( "HUDPaint", "Fishingmod:HUDPaint", function()
 				surface.DrawRect(xy.x - text_height / 2 + 3 - pad, xy.y - text_width / 2 - 1 + 3 - pad, text_height - 6 + pad * 2, text_width - 6 + pad * 2)
 				draw.DrawText(data.text, "fixed_height_font", xy.x, xy.y - (text_width / 2), ui_text, 1) -- \t key causes it to snap
 			end
-				
+
 			data = fishingmod.InfoTable.Bait[entity:EntIndex()]
 			if data and data.text then
 				surface.SetFont("fixed_height_font")
@@ -142,18 +142,16 @@ hook.Add("Think", "Fishingmod.Keys:Think", function()
 	local ply = LocalPlayer()
 	if ply:GetFishingRod() and not vgui.CursorVisible() then
 		if input.IsKeyDown(KEY_B) and force_b == 1 then
-			local menu = fishingmod.UpgradeMenu
-			if ValidPanel(menu) and not menu:IsVisible() then
-				menu:SetVisible(true)
-				menu:MakePopup()
+			if not IsValid(fishingmod.UpgradeMenu) then
+				fishingmod.UpgradeMenu = vgui.Create('Fishingmod:ShopMenu')
 			end
-		end	
+		end
 		if input.IsKeyDown(KEY_E) then
 			RunConsoleCommand("fishing_mod_drop_bait")
 		end
 		if input.IsKeyDown(KEY_R) then
 			RunConsoleCommand("fishing_mod_drop_catch")
-		end	
+		end
 	end
 end)
 
@@ -185,8 +183,8 @@ hook.Add("CalcView", "Fishingmod:CalcView", function(ply, offset, angles, fov)
 		view.angles		= angles
 		view.fov		= fov
 
-		local startview = ply:GetShootPos() + 
-			(ply:EyeAngles():Right() * 70) + 
+		local startview = ply:GetShootPos() +
+			(ply:EyeAngles():Right() * 70) +
 			(Angle(0, ply:EyeAngles().y, 0):Forward() * -120 ) +
 			(Angle(0, 0, ply:EyeAngles().r):Up() * -( 10 + ( 180 - 256 * (math.min(view.angles.p, 150 - 90) + 90) / 180) ))
 

@@ -48,9 +48,9 @@ hook.Add("CanTool", "Fishingmod:CanTool", function(ply, trace, tool)
 	if string.find(trace.Entity:GetClass(), "fishing_rod") then
 		return false
 	end
-		
+
 	if trace.Entity:GetClass() == "prop_physics" and trace.Entity.is_bait then
-		return false		
+		return false
 	end
 end)
 fishingmod.bait_spawn_delay = 0.625
@@ -67,24 +67,27 @@ concommand.Add("fishing_mod_buy_bait", function(ply, command, arguments)
 
 		if fishingmod.ExpToLevel(ply.fishingmod.exp) < data.levelrequired then return end
 		if not fishingmod.Pay(ply, math.Round(data.price * data.multiplier)) then return end
-		
+
 		local bait = ents.Create("prop_physics")
 		bait.data = {}
 		bait.is_bait = true
 		bait.data.owner = ply
 		bait.data.ownerid = ply:UniqueID()
 		bait.data.friendly = type
-		bait:SetModel(table.Random(data.models))
+
+		local model = table.Random(data.models)
+		bait:SetModel(util.IsValidProp(model) and model or "models/hunter/blocks/cube025x025x025.mdl")
 		bait:SetPos(util.QuickTrace(ply:GetShootPos(), ply:GetAimVector() * 100, ply).HitPos + Vector(0, 0, 32))
 		bait:Spawn()
+
 		if bait:IsValid() then
 			bait:GetPhysicsObject():SetMass(math.min(bait:GetPhysicsObject():GetMass(), 100))
 		end
 
-		hook.Run("PlayerSpawnedProp", ply, bait:GetModel(), bait)
+		hook.Run("PlayerSpawnedSENT", ply, bait)
 
 		if not util.IsValidProp(bait:GetModel():lower()) then bait:PhysicsInitBox(Vector(1, 1, 1 ) * -7,Vector(1, 1, 1) * 7) end
-		
+
 		fishingmod.SetBaitInfo(bait)
 		hooky:SetPos(hooky:GetPos() + Vector(0, 0, (1 - util.QuickTrace(hooky:GetPos(), Vector(0, 0, -16) ).Fraction) * 16 ) )
 		fishingmod.HookBait(ply, bait, hooky)
@@ -147,7 +150,7 @@ function fishingmod.IsBait(entity)
 		if type(catch.bait) == "table" then
 			for key, bait in pairs(catch.bait) do
 				if string.lower(bait) == model and entity.is_bait then
-					return true 
+					return true
 				end
 			end
 		end
@@ -203,9 +206,16 @@ end
 function fishingmod.Sell(ply, entity, value)
 	if player.GetByUniqueID(entity.data.ownerid) ~= ply then return end
 	if entity.PreSell and entity:PreSell(ply, value) == false then return false end
-	entity:Remove()
+
+	if badges then
+		if entity.data.fried and entity.data.fried > 0 then ply:AddBadge("fishingmod_cook") end
+		ply:AddBadge("fishingmod_firstcatch")
+	end
+
 	fishingmod.GiveMoney(ply, value or 0)
 	ply:EmitSound("ambient/levels/labs/coinslot1.wav", 100, math.random(90, 110))
+	entity:Remove()
+
 	return true
 end
 
@@ -230,29 +240,29 @@ hook.Add("FishingModCaught", "FishingMod:Seagull", function(ply, entity)
 		--print("AFTER RANDOM")
 		local random = VectorRand()*2000
 		random.z = math.abs(random.z)
-		
+
 		local position = ply:GetPos()+random
-		
+
 		if not util.IsInWorld(position) then return end
 		--print("NOT IN WORLD")
-		
+
 		local seagull = ents.Create("fishing_mod_seagull")
 		seagull:SetPos(position)
 		seagull:SetTarget(entity)
 		seagull:SetTargetOwner(ply)
 		seagull:Spawn()
-		
+
 		--print("SUCCESS")
 	end
 end)
 
 function fishingmod.FriedToMultiplier(number)
 	local tri = ((1-math.abs((number/1000-0.5)*2))*8) + 1
-	
+
 	if number > 500 then
 		tri = tri - (number/1000)
 	end
-	
+
 	return tri
 end
 
@@ -265,18 +275,18 @@ timer.Create("FishingMod:Think",1,0,function()
 		if bobber then
 			for key, data in RandomPairs(fishingmod.CatchTable) do
 				if not data.type then continue end
-				
+
 				local chance=math.random(
 								math.max(
-									data.rareness 
-									- 
-									math.min( math.ceil( bobber:GetVelocity():Length()/4 ), data.rareness/2 ) 
+									data.rareness
+									-
+									math.min( math.ceil( bobber:GetVelocity():Length()/4 ), data.rareness/2 )
 									-
 									math.min(
 										math.ceil(
 											rod:GetBobber():GetPos():Distance(ply:GetShootPos()/4)
 										,
-											data.rareness/2 
+											data.rareness/2
 										)
 									,
 										1
@@ -302,19 +312,19 @@ end)
 
 concommand.Add("fishing_mod_request_init", function(ply)
 	if ply.fishing_mod_spawned then return end
-	
+
 	for key, entity in pairs(ents.GetAll()) do
 		if entity:GetNWBool("fishingmod catch") then
 			fishingmod.SetCatchInfo(entity, ply)
 		end
 	end
-	
+
 	for bait, data in pairs(fishingmod.BaitTable) do
 		fishingmod.SetBaitSale(bait, data.multiplier, ply)
 	end
-	
+
 	fishingmod.InitPlayerStats(ply)
-	
+
 	ply.fishing_mod_spawned = true
 end)
 
@@ -335,5 +345,15 @@ hook.Add("Tick", "FishingMod:UpdateSales", function()
 end)
 
 hook.Add("InitPostEntity", "FishingMod:SetSales", function()
+	if badges then
+		badges.CreateBadge("fishingmod_firstcatch", "Fishingmod: Начало карьеры", "Выловите и продайте свой первый улов")
+		badges.CreateBadge("fishingmod_seagullfail", "Fishingmod: Не в мою смену!", "Не позвольте чайке украсть ваш улов")
+		badges.CreateBadge("fishingmod_dollkiller", "Fishingmod: Куклоубийца", "Убейте проклятую куклу!")
+		badges.CreateBadge("fishingmod_upgrademax", "Fishingmod: Предельная эффективность", "Улучшите свою удочку до максимального уровня в любой категории")
+		badges.CreateBadge("fishingmod_diamond", "Fishingmod: Моя прелесть!", "Выловите алмаз")
+		badges.CreateBadge("fishingmod_upgrade", "Fishingmod: Обновка!", "Улучшите свою удочку")
+		badges.CreateBadge("fishingmod_cook", "Fishingmod: Шеф повар", "Приготовьте свой улов на выловленной плите и продайте его")
+	end
+
 	fishingmod.SetRandomSale()
 end)

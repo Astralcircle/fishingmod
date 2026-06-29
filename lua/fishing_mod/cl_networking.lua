@@ -4,21 +4,21 @@ fishingmod.InfoTable.Bait = fishingmod.InfoTable.Bait or {}
 
 local function FriedToFriendly(number)
 	if number == 0 then
-		return "not cooked at all"
+		return "вообще не приготовленный"
 	elseif number < 200 then
-		return "cooked rare"
+		return "слабой прожарки"
 	elseif number < 300 then
-		return "cooked medium rare"
+		return "среде-слабой прожарки"
 	elseif number < 500 then
-		return "cooked medium"
+		return "средней прожарки"
 	elseif number < 600 then
-		return "cooked medium well"
+		return "средне-высокой прожарки"
 	elseif number < 700 then
-		return "cooked well done"
+		return "хорошо прожарен"
 	elseif number < 900 then
-		return "almost burnt" 
+		return "почти сгоревший" 
 	elseif number <= 1000 then
-		return "burnt"
+		return "сгоревший"
 	end
 end
 
@@ -63,27 +63,12 @@ local function UpdatePlayer(ply)
 	end
 end
 
-local function UpdatePlayerWait(ply,time)
-	if time<CurTime() then return end
-	if IsValid(ply) and ply:IsPlayer() then
-		ply.fishingmod = ply.fishingmod or {}
-		if ply.fishingmod then
-			--print("Delayed update",ply)
-			UpdatePlayer(ply)
-			return
-		end
-	end
-	timer.Simple(0.5,function() 
-		UpdatePlayerWait(ply,time)
-	end)
-end
-
 net.Receive("Fishingmod:Player", function() 
 	local ply = net.ReadEntity()
-	if not IsValid(ply) or not ply:IsPlayer() or not ply.fishingmod then
-		UpdatePlayerWait(ply,CurTime()+5)
+
+	if ply:IsValid() and ply:IsPlayer() then
+		UpdatePlayer(ply)
 	end
-	UpdatePlayer(ply)
 end)
 
 net.Receive("Fishingmod:Catch", function() 
@@ -107,12 +92,12 @@ net.Receive("Fishingmod:Catch", function()
 		cooked = FriedToFriendly(fried),
 		value = value,
 	}
-	local text = Format([[This catch is called %s
-and it is %s
-%s caught this
+	local text = Format([[Этот улов называется %s
+и он %s
+%s выловил его
 {TIME}
-You can sell this catch 
-by pressing reload for $%s.]],
+Вы можете продать этот улов
+нажав кнопку перезарядки за $%s.]],
 	friendly,
 	FriedToFriendly(fried),
 	owner,
@@ -146,7 +131,7 @@ net.Receive("Fishingmod:Bait", function()
 		nameparse = ec_markup.Parse(nameparse):GetText()
 	end
 	local text = Format([[
-		This bait is owned by %s.
+		Эта наживка принадлежит %s.
 	]],
 	nameparse
 	)

@@ -1,9 +1,9 @@
 fishingmod.AddCatch{
 	friendly = "Angry Baby",
 	type = "fishing_mod_catch_angry_baby",
-	rareness = 2000, 
-	yank = 0, 
-	mindepth = 200, 
+	rareness = 2000,
+	yank = 0,
+	mindepth = 200,
 	maxdepth = 20000,
 	expgain = 50,
 	levelrequired = 3,
@@ -39,10 +39,10 @@ if SERVER then
 			phys:SetDamping(0,0)
 			phys:Wake()
 			phys:SetBuoyancyRatio( 0 )
-		end	
+		end
 	end
 
-	timer.Create("AngryBaby:FindTarget", 1, 0, function() 
+	timer.Create("AngryBaby:FindTarget", 1, 0, function()
 		local number_of_babies = #ents.FindByClass("fishing_mod_catch_angry_baby")
 		if number_of_babies == 0 then return end
 		local baby = ents.FindByClass("fishing_mod_catch_angry_baby")[math.random(number_of_babies)]
@@ -58,7 +58,7 @@ if SERVER then
 			if IsValid(entity) and entity:GetClass() == "prop_physics" and (entity:GetClass() ~= "fishing_mod_catch_angry_baby" and entity:GetVelocity():Length() > 20) then
 				fishingmod.AngryBabyTarget = entity
 			end
-		end		
+		end
 	end)
 
 	function ENT:PhysicsSimulate(phys, deltatime)
@@ -72,7 +72,7 @@ if SERVER then
 				phys:AddAngleVelocity(VectorRand()*5000)
 				return
 			end
-		
+
 			if IsValid(self.target) then
 				phys:AddVelocity((self.target:GetPos() - self:GetPos()))
 				phys:AddAngleVelocity(VectorRand()*2000)
@@ -104,16 +104,24 @@ if SERVER then
 			self.dead = true
 			self:GetPhysicsObject():SetBuoyancyRatio( 1 )
 			self:EmitSound("ambient/creatures/teddy.wav", 100, math.random(90,110))
+
+			if badges then
+				local attacker = dmginfo:GetAttacker()
+
+				if attacker:IsValid() and attacker:IsPlayer() then
+					attacker:AddBadge("fishingmod_dollkiller")
+				end
+			end
 		end
 	end
 
 	function ENT:Think()
 		if self.dead then return end
-		
+
 		self.target = fishingmod.AngryBabyTarget
-		
+
 		self:PhysWake()
-			
+
 		self:NextThink(CurTime()+0.3)
 		return true
 	end
