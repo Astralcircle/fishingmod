@@ -25,13 +25,13 @@ end
 
 concommand.Add("fishingmod_upgrade_rod_length", function(ply, command, arguments)
 	local amount = tonumber(arguments[1])
-	if not amount then ply:PrintMessage(HUD_PRINTTALK, "Invalid amount") return end
+	if not amount then ply:PrintMessage(HUD_PRINTTALK, "Неверное число") return end
 	fishingmod.UpgradeRodLength(ply, amount)
 end)
 
 concommand.Add("fishingmod_downgrade_rod_length", function(ply, command, arguments)
 	local amount = tonumber(arguments[1])
-	if not amount then ply:PrintMessage(HUD_PRINTTALK, "Invalid amount") return end
+	if not amount then ply:PrintMessage(HUD_PRINTTALK, "Неверное число") return end
 	fishingmod.DowngradeRodLength(ply, amount)
 end)
 
@@ -61,13 +61,13 @@ end
 
 concommand.Add("fishingmod_upgrade_string_length", function(ply, command, arguments)
 	local amount = tonumber(arguments[1])
-	if not amount then ply:PrintMessage(HUD_PRINTTALK, "Invalid amount") return end
+	if not amount then ply:PrintMessage(HUD_PRINTTALK, "Неверное число") return end
 	fishingmod.UpgradeStringLength(ply, amount)
 end)
 
 concommand.Add("fishingmod_downgrade_string_length", function(ply, command, arguments)
 	local amount = tonumber(arguments[1])
-	if not amount then ply:PrintMessage(HUD_PRINTTALK, "Invalid amount") return end
+	if not amount then ply:PrintMessage(HUD_PRINTTALK, "Неверное число") return end
 	fishingmod.DowngradeStringLength(ply, amount)
 end)
 
@@ -98,13 +98,13 @@ end
 
 concommand.Add("fishingmod_upgrade_reel_speed", function(ply, command, arguments)
 	local amount = tonumber(arguments[1])
-	if not amount then ply:PrintMessage(HUD_PRINTTALK, "Invalid amount") return end
+	if not amount then ply:PrintMessage(HUD_PRINTTALK, "Неверное число") return end
 	fishingmod.UpgradeReelSpeed(ply, amount)
 end)
 
 concommand.Add("fishingmod_downgrade_reel_speed", function(ply, command, arguments)
 	local amount = tonumber(arguments[1])
-	if not amount then ply:PrintMessage(HUD_PRINTTALK, "Invalid amount") return end
+	if not amount then ply:PrintMessage(HUD_PRINTTALK, "Неверное число") return end
 	fishingmod.DowngradeReelSpeed(ply, amount)
 end)
 
@@ -134,13 +134,13 @@ end
 
 concommand.Add("fishingmod_upgrade_hook_force", function(ply, command, arguments)
 	local amount = tonumber(arguments[1])
-	if not amount then ply:PrintMessage(HUD_PRINTTALK, "Invalid amount") return end
+	if not amount then ply:PrintMessage(HUD_PRINTTALK, "Неверное число") return end
 	fishingmod.UpgradeHookForce(ply, amount)
 end)
 
 concommand.Add("fishingmod_downgrade_hook_force", function(ply, command, arguments)
 	local amount = tonumber(arguments[1])
-	if not amount then ply:PrintMessage(HUD_PRINTTALK, "Invalid amount") return end
+	if not amount then ply:PrintMessage(HUD_PRINTTALK, "Неверное число") return end
 	fishingmod.DowngradeHookForce(ply, amount)
 end)
 
