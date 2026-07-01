@@ -84,6 +84,7 @@ function ENT:CanProperty() return false end
 
 function ENT:AssignPlayer(ply)
 	self:SetOwner(ply)
+	self:SetCreator(ply)
 
 	self.dt.ply = ply
 	local idx = ply:LookupBone("ValveBiped.Bip01_R_Hand")
@@ -93,22 +94,18 @@ function ENT:AssignPlayer(ply)
 	local bobber = ents.Create("fishing_rod_bobber")
 	bobber.rod = self
 	bobber:SetOwner(ply)
+	bobber:SetCreator(ply)
 	bobber:SetPos(position)
 	bobber:Spawn()
-	hook.Run("PlayerSpawnedSENT", ply, bobber)
-	if bobber.CPPISetOwner then bobber:CPPISetOwner(ply) end
 	
 	self.dt.attach = bobber
 	
 	local fish_hook = ents.Create("fishing_rod_hook")
 	fish_hook.bobber = bobber
 	fish_hook:SetOwner(ply)
+	fish_hook:SetCreator(ply)
 	fish_hook:SetPos(position)
 	fish_hook:Spawn()
-	function fish_hook:CanTool() return false end
-	function fish_hook:CanProperty() return false end
-	hook.Run("PlayerSpawnedSENT", ply, fish_hook)
-	if fish_hook.CPPISetOwner then fish_hook:CPPISetOwner(ply) end
 	
 	local bait = util.QuickTrace(ply:GetShootPos(), ply:GetAimVector()*400, {ply, self, bobber, fish_hook}).Entity
 	if IsValid(bait) then
