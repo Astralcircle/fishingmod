@@ -599,7 +599,7 @@ function PANEL:Init()
 
 	self.left:Dock(LEFT)
 	self.leftlabel:SetPos(30, - 2)
-	self.rightlabel:SetPos(130, - 2)
+	self.rightlabel:SetPos(150, - 2)
 	self.right:Dock(RIGHT)
 	local selfleft = self.left
 	function self.left:Paint() -- 'sell' skill button
