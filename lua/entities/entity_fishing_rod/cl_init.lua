@@ -17,7 +17,6 @@ local margin_from_border = 16         -- 16 pixels from the top and bottom borde
 local inner_box_xy = 3                -- padding of the 2 shades of background
 local bg_heightdepthcatch = 0         -- if a catch or depth exist elongate the box
 local minwid = 50                     -- minimum width of dark background box
-local markup = 0
 local stripped_name_width = 0
 
 local depth, catch = "", ""
@@ -88,15 +87,6 @@ function ENT:HUDPaint()
 	temp_nick = ply:Nick()
 	team_col = team.GetColor(ply:Team())
 
-	if EasyChat then
-		markup = ec_markup.AdvancedParse(temp_nick, {
-			nick = true,
-			default_color = team_col,
-			default_font = "fixed_name_font",
-			default_shadow_font = "fixed_name_font",
-		})
-		stripped_name_width = markup:GetWidth()
-	end
 	bg_heightdepthcatch = 0
 	if self:GetHook() and self:GetHook():WaterLevel() >= 1 then
 		depth = "\nГлубина " .. tostring(math.Round((self:GetDepth() * 2.54) / 100 * 10) / 10) or 0
