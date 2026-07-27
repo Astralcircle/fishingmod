@@ -118,15 +118,10 @@ function ENT:HUDPaint()
 
 	surface.SetDrawColor(ui_background.r, ui_background.g, ui_background.b, ui_background.a)
 
-	if EasyChat then
-		surface.DrawRect(ecbg_x, bg_y, ecbg_width, bg_height)
-		surface.DrawRect(ecbg_x + inner_box_xy, bg_y + inner_box_xy, ecbg_width - (2 * inner_box_xy), bg_height - (2 * inner_box_xy))
-		markup:Draw(xy.x - (stripped_name_width / 2), xy.y - 102 - height_offset - markup:GetHeight()/2)
-	else
-		surface.DrawRect(bg_x, bg_y, bg_width, bg_height)
-		surface.DrawRect(bg_x + inner_box_xy, bg_y + inner_box_xy, bg_width - (2 * inner_box_xy), bg_height - (2 * inner_box_xy) )
-		draw.DrawText(temp_nick, "fixed_name_font", xy.x, xy.y - 112 - height_offset, team_col, 1)
-	end
+	surface.DrawRect(bg_x, bg_y, bg_width, bg_height)
+	surface.DrawRect(bg_x + inner_box_xy, bg_y + inner_box_xy, bg_width - (2 * inner_box_xy), bg_height - (2 * inner_box_xy) )
+	draw.DrawText(temp_nick, "fixed_name_font", xy.x, xy.y - 112 - height_offset, team_col, 1)
+
 	draw.RoundedBox(1, xy.x - 50, xy.y - 88 - height_offset, 100, 23, xp_bar_bg)
 	draw.RoundedBox(1, xy.x - 50, xy.y - 88 - height_offset, math.min(ply.fishingmod.percent, 100), 23, xp_bar_fg)
 	draw.DrawText(tostring(math.Round(ply.fishingmod.expleft)), "fixed_height_font" , xy.x, xy.y - 84 - height_offset, xp_bar_text, 1)
