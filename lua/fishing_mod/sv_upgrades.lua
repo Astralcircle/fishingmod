@@ -144,3 +144,15 @@ concommand.Add("fishingmod_downgrade_hook_force", function(ply, command, argumen
 	fishingmod.DowngradeHookForce(ply, amount)
 end)
 
+--Rebirth
+
+function fishingmod.UpgradeRebirth(ply)
+	local cost = fishingmod.RebirthPrice * (ply.fishingmod.rebirth + 1)
+	if cost > ply.fishingmod.money then return end
+
+	fishingmod.AddRebirth(ply, amount)
+end
+
+concommand.Add("fishingmod_upgrade_rebirth", function(ply, command, arguments)
+	fishingmod.UpgradeRebirth(ply, amount)
+end)

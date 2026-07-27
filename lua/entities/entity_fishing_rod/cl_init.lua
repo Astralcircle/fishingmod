@@ -114,7 +114,7 @@ function ENT:HUDPaint()
     end
 
 	surface.SetFont("fixed_height_font")
-	local text_below = "Общий улов: " .. ply.fishingmod.catches .. "\nДеньги: " .. (math.Round(ply.fishingmod.money) or "0") .. "\nУровень: " .. ply.fishingmod.level .. "\nДлина: " .. tostring(math.Round((self:GetLength() * 2.54) / 100 * 10) / 10) .. depth .. catch
+	local text_below = "Общий улов: " .. ply.fishingmod.catches .. "\nДеньги: " .. (math.Round(ply.fishingmod.money) or "0") .. "\nУровень: " .. ply.fishingmod.level .. "\nПрестиж: " .. ply.fishingmod.rebirth .. "\nДлина: " .. tostring(math.Round((self:GetLength() * 2.54) / 100 * 10) / 10) .. depth .. catch
 	box_below_w, box_below_h = surface.GetTextSize(text_below)
 
 	surface.SetFont("fixed_name_font")

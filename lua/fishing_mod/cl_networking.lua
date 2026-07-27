@@ -16,7 +16,7 @@ local function FriedToFriendly(number)
 	elseif number < 700 then
 		return "хорошо прожарен"
 	elseif number < 900 then
-		return "почти сгоревший" 
+		return "почти сгоревший"
 	elseif number <= 1000 then
 		return "сгоревший"
 	end
@@ -33,8 +33,8 @@ net.Receive("Fishingmod:BaitPrices", function()
 end)
 
 
-local function UpdatePlayer(ply) 
-	
+local function UpdatePlayer(ply)
+
 	local exp = net.ReadDouble()
 	local catch = net.ReadDouble()
 	local money = net.ReadDouble()
@@ -42,6 +42,7 @@ local function UpdatePlayer(ply)
 	local reel_speed = net.ReadInt(16)
 	local string_length = net.ReadInt(16)
 	local force = net.ReadInt(16)
+	local rebirth = net.ReadInt(16)
 	local spawned = net.ReadBool()
 	ply.fishingmod = ply.fishingmod or {}
 	if not ply.fishingmod then return end
@@ -49,7 +50,8 @@ local function UpdatePlayer(ply)
 	ply.fishingmod.reel_speed = reel_speed
 	ply.fishingmod.string_length = string_length
 	ply.fishingmod.force = force
-	
+	ply.fishingmod.rebirth = rebirth
+
 	ply.fishingmod.money = money
 	ply.fishingmod.level = fishingmod.ExpToLevel(exp)
 	ply.fishingmod.last_level = ply.fishingmod.level
@@ -63,7 +65,7 @@ local function UpdatePlayer(ply)
 	end
 end
 
-net.Receive("Fishingmod:Player", function() 
+net.Receive("Fishingmod:Player", function()
 	local ply = net.ReadEntity()
 
 	if ply:IsValid() and ply:IsPlayer() then
@@ -71,14 +73,14 @@ net.Receive("Fishingmod:Player", function()
 	end
 end)
 
-net.Receive("Fishingmod:Catch", function() 
+net.Receive("Fishingmod:Catch", function()
 	local entity = net.ReadInt(16)
 	local friendly = net.ReadString()
 	local caught = net.ReadInt(32)
 	local owner = net.ReadString()
 	local fried = net.ReadInt(16)
 	local value = net.ReadInt(32)
-	
+
 	value = value == 0 and "????" or value
 	if(UndercorateNick) then
 		owner = UndercorateNick(owner)
@@ -113,12 +115,12 @@ net.Receive("Fishingmod:Catch", function()
 	fishingmod.InfoTable.Catch[entity].text = text
 end)
 
-net.Receive("Fishingmod:Bait", function() 
+net.Receive("Fishingmod:Bait", function()
 	local entity = net.ReadInt(16)
 	local owner = net.ReadString()
-	
+
 	local ply = game.SinglePlayer() and LocalPlayer() or player.GetByUniqueID(owner)
-	
+
 	if not IsValid(ply) then return end
 
 	fishingmod.InfoTable.Bait[entity] = {

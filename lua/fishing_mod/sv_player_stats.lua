@@ -6,7 +6,8 @@ sql.Query([[CREATE TABLE IF NOT EXISTS fishingmod_data (
 	length INTEGER,
 	reel_speed INTEGER,
 	string_length INTEGER,
-	force INTEGER
+	force INTEGER,
+	rebirth INTEGER
 )]])
 
 function fishingmod.SavePlayerInfo(ply, name, value)
@@ -16,7 +17,7 @@ function fishingmod.SavePlayerInfo(ply, name, value)
 end
 
 function fishingmod.LoadPlayerInfo(ply)
-	local info = sql.QueryTyped("SELECT catches, exp, money, length, reel_speed, string_length, force FROM fishingmod_data WHERE steamid = ? LIMIT 1", ply:SteamID64())
+	local info = sql.QueryTyped("SELECT catches, exp, money, length, reel_speed, string_length, force, rebirth FROM fishingmod_data WHERE steamid = ? LIMIT 1", ply:SteamID64())
 	return info[1] or {}
 end
 
@@ -102,6 +103,23 @@ function fishingmod.SetHookForce(ply, force, add_or_sub)
 	fishingmod.UpdatePlayerInfo(ply)
 end
 
+function fishingmod.AddRebirth(ply)
+	ply.fishingmod.money = 0
+	fishingmod.SavePlayerInfo(ply, "money", 0)
+
+	ply.fishingmod.exp = 0
+	fishingmod.SavePlayerInfo(ply, "exp", 0)
+
+	fishingmod.SetRodLength(ply, 0)
+	fishingmod.SetRodReelSpeed(ply, 0)
+	fishingmod.SetRodStringLength(ply, 0)
+	fishingmod.SetHookForce(ply, 0)
+
+	ply.fishingmod.rebirth = ply.fishingmod.rebirth + 1
+	fishingmod.SavePlayerInfo(ply, "rebirth", ply.fishingmod.rebirth)
+	fishingmod.UpdatePlayerInfo(ply)
+end
+
 function fishingmod.InitPlayerStats(ply)
 	if not IsValid(ply) then return end
 
@@ -114,7 +132,8 @@ function fishingmod.InitPlayerStats(ply)
 		length = info.length or 0,
 		reel_speed = info.reel_speed or 0,
 		string_length = info.string_length or 0,
-		force = info.force or 0
+		force = info.force or 0,
+		rebirth = info.rebirth or 0
 	}
 
 	fishingmod.UpdatePlayerInfo(ply, true)

@@ -212,7 +212,7 @@ function fishingmod.Sell(ply, entity, value)
 		ply:AddBadge("fishingmod_firstcatch")
 	end
 
-	fishingmod.GiveMoney(ply, value or 0)
+	fishingmod.GiveMoney(ply, (value or 0) * (ply.fishingmod.rebirth + 1))
 	ply:EmitSound("ambient/levels/labs/coinslot1.wav", 100, math.random(90, 110))
 	entity:Remove()
 

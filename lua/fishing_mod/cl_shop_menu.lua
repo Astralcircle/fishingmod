@@ -363,6 +363,10 @@ function PANEL:Init()
 	self.force = vgui.Create("Fishingmod:UpgradeButton", self)
 	self.force:SetType("Сила крюка:", "force", "hook_force", fishingmod.HookForcePrice)
 	self:AddItem(self.force)
+
+	self.rebirth = vgui.Create("Fishingmod:UpgradeButton", self)
+	self.rebirth:SetType("Престиж:", "rebirth", "rebirth", fishingmod.RebirthPrice * (LocalPlayer().fishingmod.rebirth + 1))
+	self:AddItem(self.rebirth)
 end
 
 vgui.Register("Fishingmod:Upgrade", PANEL, "DPanelList")
