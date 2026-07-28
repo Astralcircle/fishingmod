@@ -347,6 +347,7 @@ end)
 hook.Add("InitPostEntity", "FishingMod:SetSales", function()
 	if badges then
 		badges.CreateBadge("fishingmod_firstcatch", "Fishingmod: Начало карьеры", "Выловите и продайте свой первый улов")
+		badges.CreateBadge("fishingmod_fromscratch", "Fishingmod: С чистого листа", "Совершите свое первое перерождение")
 		badges.CreateBadge("fishingmod_seagullfail", "Fishingmod: Не в мою смену!", "Не позвольте чайке украсть ваш улов")
 		badges.CreateBadge("fishingmod_dollkiller", "Fishingmod: Куклоубийца", "Убейте проклятую куклу!")
 		badges.CreateBadge("fishingmod_upgrademax", "Fishingmod: Предельная эффективность", "Улучшите свою удочку до максимального уровня в любой категории")

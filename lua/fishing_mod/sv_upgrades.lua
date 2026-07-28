@@ -151,6 +151,10 @@ function fishingmod.UpgradeRebirth(ply)
 	if cost > ply.fishingmod.money then return end
 
 	fishingmod.AddRebirth(ply, amount)
+
+	if badges then
+		ply:AddBadge("fishingmod_fromscratch")
+	end
 end
 
 concommand.Add("fishingmod_upgrade_rebirth", function(ply, command, arguments)
