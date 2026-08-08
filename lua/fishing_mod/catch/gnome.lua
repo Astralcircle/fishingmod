@@ -1,9 +1,9 @@
 fishingmod.AddCatch{
 	friendly = "Gnome",
 	type = "fishing_mod_catch_gnome",
-	rareness = 4000, 
-	yank = 0, 
-	mindepth = 400, 
+	rareness = 4000,
+	yank = 0,
+	mindepth = 400,
 	maxdepth = 800,
 	expgain = 80,
 	levelrequired = 15,
@@ -12,10 +12,8 @@ fishingmod.AddCatch{
 	scalable = "box",
 	bait = {
 		"models/weapons/w_bugbait.mdl",
-		"models/props_gameplay/bottle001.mdl",
 		"models/props_junk/garbage_glassbottle001a.mdl",
 		"models/props_junk/garbage_glassbottle002a.mdl",
-		"models/weapons/w_models/w_bottle.mdl",
 		"models/props_junk/GlassBottle01a.mdl",
 		"models/props_junk/glassjug01.mdl",
 		"models/props_junk/garbage_glassbottle003a.mdl",
@@ -37,60 +35,60 @@ if SERVER then
 		self:PhysicsInit( SOLID_VPHYSICS )
 		self:SetCollisionGroup(COLLISION_GROUP_INTERACTIVE)
 		self:StartMotionController()
-		
+
 		self.TauntTime = 0
 		self.is_recatchable = false
-		
+
 		local phys = self:GetPhysicsObject()
 		if IsValid(phys) then
 			phys:SetDamping(0,0)
 			phys:Wake()
 			phys:SetBuoyancyRatio( 1 )
 		end
-		
+
 	end
 
 	function ENT:Talk()
-		
+
 		local num = math.random(1,19)
 		if num <= 9 then
 			num = "0"..num
-		end	
-		
+		end
+
 		self:EmitSound("vo/taunts/heavy_taunts"..num..".wav", 100, math.random(110,120))
-		
+
 		self.TauntTime = CurTime()+10
-		
+
 	end
 
 	function ENT:Use(activator, caller)
 		if self.dead then return end
-		
+
 		if self.TauntTime <= CurTime() then
-			
+
 			self:Talk()
-			
+
 		end
-		
+
 	end
-		
+
 	function ENT:PhysicsSimulate(phys, deltatime)
 		if self.dead then return end
 		phys:Wake()
-		
+
 		if self:WaterLevel() >= 3 then
-			
+
 			if constraint.FindConstraint(self, "Weld") then
 				phys:AddVelocity(VectorRand()*100)
 				phys:AddAngleVelocity(VectorRand()*80)
 				return
 			end
-			
+
 			local force = VectorRand()*80
 			force.z = 100
 			phys:AddVelocity(force)
 			phys:AddAngleVelocity(Vector(0,0,360))
-			
+
 		else
 			phys:AddVelocity(VectorRand()*10)
 		end
@@ -122,19 +120,19 @@ if SERVER then
 
 	function ENT:Think()
 		if self.dead then return end
-		
+
 		if self:WaterLevel() < 3 then
-			
+
 			if math.random() > 0.95 and self.TauntTime <= CurTime() then
-				
+
 				self:Talk()
-				
+
 			end
-			
+
 		end
 		self:NextThink(CurTime()+0.5)
 		return true
-		
+
 	end
 
 end

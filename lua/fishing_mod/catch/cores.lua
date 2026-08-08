@@ -10,7 +10,7 @@ fishingmod.AddCatch{
 	remove_on_release = false,
 	value = 100,
 	bait = {
-		"models/props/sphere.mdl",
+		"models/hunter/misc/sphere1x1.mdl",
 	}
 }
 
@@ -24,47 +24,47 @@ function ENT:SetupDataTables()
 end
 
 if SERVER then
-	
+
 	function ENT:Initialize()
-		
+
 		self:SetModel("models/props_bts/glados_ball_reference.mdl")
 		self:PhysicsInit(SOLID_VPHYSICS)
 		self:SetMoveType(MOVETYPE_VPHYSICS)
 		self:SetSolid(SOLID_VPHYSICS)
 		self:SetCollisionGroup(COLLISION_GROUP_INTERACTIVE)
-		
+
 		self.dt.Core = math.random(0,3)
-		
+
 		self.body = ents.Create("prop_dynamic")
 		self.body:SetModel("models/props_bts/glados_ball_reference.mdl")
 		self.body:SetAngles(self:GetAngles())
 		self.body:SetPos(self:GetPos())
 		self.body:SetParent(self)
 		self.body:Spawn()
-		
+
 		self.body:SetSkin(self.dt.Core)
-		
+
 		if self.dt.Core == 0 then
 			self.Anim = self:LookupSequence("idle")
 		else
 			self.Anim = self:LookupSequence("Look_0"..self.dt.Core+1)
 		end
-		
+
 	end
-	
+
 	function ENT:Think()
 		if not IsValid(self.body) then return end
 		self.body:ResetSequence(self.Anim)
 	end
-	
+
 	function ENT:OnRemove()
-		
+
 		SafeRemoveEntity(self.body)
-		
+
 	end
-	
+
 else
-	
+
 	ENT.Sounds = {
 		[1]={},
 		[2]={},
@@ -94,28 +94,28 @@ else
 			ENT.Sounds[3][i] = "vo/aperture_ai/escape_02_sphere_cakemix-"..i..".wav"
 		end
 	end
-	
+
 	function ENT:Initialize()
-		
+
 		self.LastSound = 1
-		
+
 	end
-	
+
 	function ENT:Think()
-		
+
 		if (self.LastSound <= CurTime()) and not(self.dt.Core == 0) then
 			local curSound = table.Random(self.Sounds[self.dt.Core])
-			
+
 			self:EmitSound(curSound, 80, 100)
-			
+
 			self.LastSound = CurTime()+SoundDuration(curSound)+0.1
 		end
-		
+
 	end
-	
+
 	function ENT:Draw()
 	end
-	
+
 end
-	
+
 scripted_ents.Register(ENT, "fishing_mod_catch_cores", true)

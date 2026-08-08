@@ -11,7 +11,7 @@ fishingmod.AddCatch{
 	levelrequired = 44,
 	remove_on_release = false,
 	bait = {
-		"models/props_2fort/pick001.mdl"
+		"models/props_mining/pickaxe01.mdl"
 	},
 }
 
@@ -69,7 +69,7 @@ fishingmod.AddCatch{
 	levelrequired = 44,
 	remove_on_release = false,
 	bait = {
-		"models/props_2fort/pick001.mdl"
+		"models/props_mining/pickaxe01.mdl"
 	},
 }
 
@@ -118,7 +118,7 @@ fishingmod.AddCatch{
 	levelrequired = 44,
 	remove_on_release = false,
 	bait = {
-		"models/props_2fort/pick001.mdl"
+		"models/props_mining/pickaxe01.mdl"
 	},
 }
 
@@ -167,7 +167,7 @@ fishingmod.AddCatch{
 	levelrequired = 44,
 	remove_on_release = false,
 	bait = {
-		"models/props_2fort/pick001.mdl"
+		"models/props_mining/pickaxe01.mdl"
 	},
 }
 
@@ -217,7 +217,7 @@ fishingmod.AddCatch{
 	levelrequired = 44,
 	remove_on_release = false,
 	bait = {
-		"models/props_2fort/pick001.mdl"
+		"models/props_mining/pickaxe01.mdl"
 	},
 }
 
@@ -335,7 +335,7 @@ fishingmod.AddCatch{
 	levelrequired = 44,
 	remove_on_release = false,
 	bait = {
-		"models/props_2fort/pick001.mdl"
+		"models/props_mining/pickaxe01.mdl"
 	},
 }
 
@@ -447,7 +447,7 @@ fishingmod.AddCatch{
 	levelrequired = 44,
 	remove_on_release = false,
 	bait = {
-		"models/props_2fort/pick001.mdl"
+		"models/props_mining/pickaxe01.mdl"
 	},
 }
 
@@ -564,7 +564,7 @@ fishingmod.AddCatch{
 	levelrequired = 44,
 	remove_on_release = false,
 	bait = {
-		"models/props_2fort/pick001.mdl"
+		"models/props_mining/pickaxe01.mdl"
 	},
 }
 
@@ -626,7 +626,7 @@ fishingmod.AddCatch{
 	levelrequired = 44,
 	remove_on_release = false,
 	bait = {
-		"models/props_2fort/pick001.mdl"
+		"models/props_mining/pickaxe01.mdl"
 	},
 }
 
@@ -677,6 +677,6 @@ fishingmod.AddCatch{
 	levelrequired = 44,
 	remove_on_release = true,
 		bait = {
-		"models/props_2fort/pick001.mdl"
+		"models/props_mining/pickaxe01.mdl"
 	}
 }

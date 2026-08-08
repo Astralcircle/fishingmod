@@ -1,9 +1,9 @@
 fishingmod.AddCatch{
 	friendly = "Portal Radio",
 	type = "fishing_mod_catch_portalradio",
-	rareness = 1000, 
-	yank = 100, 
-	mindepth = 100, 
+	rareness = 1000,
+	yank = 100,
+	mindepth = 100,
 	maxdepth = 20000,
 	expgain = 25,
 	levelrequired = 2,
@@ -13,7 +13,7 @@ fishingmod.AddCatch{
 		"models/props_radiostation/radio_antenna01_stay.mdl",
 		--"models/props_misc/antenna03.mdl",
 		--"models/props/de_dust/du_antenna_A.mdl",
-		--"models/props_hydro/satellite_antenna01.mdl"	
+		--"models/props_hydro/satellite_antenna01.mdl"
 	},
 }
 
@@ -24,12 +24,12 @@ ENT.Base = "fishing_mod_base"
 
 if SERVER then
 	function ENT:Initialize()
-		self:SetModel("models/props/radio_reference.mdl")
+		self:SetModel("models/props/cs_office/radio.mdl")
 		self:PhysicsInit(SOLID_VPHYSICS)
 		self:SetMoveType(MOVETYPE_VPHYSICS)
 		self:SetSolid(SOLID_VPHYSICS)
 		self.shot = false
-		self.sound = CreateSound(self, "ambient/music/looping_radio_mix.wav")
+		self.sound = CreateSound(self, "sound/ambient/music/flamenco.wav")
 		self.sound:SetSoundLevel(100)
 		self.sound:Play()
 	end
@@ -39,7 +39,7 @@ if SERVER then
 		"ambient/dinosaur_fizzle2.wav",
 		"ambient/dinosaur_fizzle3.wav"
 	}
-	
+
 	function ENT:Think()
 		if self.shot == true then
 			for key, entity in pairs(ents.FindInSphere(self:GetPos(), 15)) do
@@ -48,11 +48,11 @@ if SERVER then
 						effectdata:SetOrigin( self:GetPos() + (self:GetUp() * 5) )
 						effectdata:SetMagnitude( 4 )
 						effectdata:SetScale( 1 )
-						effectdata:SetRadius( 1 ) 
+						effectdata:SetRadius( 1 )
 						util.Effect( "Sparks", effectdata )
 						entity:Remove()
 						self.shot = false
-						self.sound = CreateSound(self, "ambient/music/looping_radio_mix.wav")
+						self.sound = CreateSound(self, "sound/ambient/music/flamenco.wav")
 						self.sound:SetSoundLevel(100)
 						self.sound:Play()
 				end

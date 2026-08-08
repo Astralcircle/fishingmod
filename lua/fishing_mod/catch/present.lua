@@ -2,10 +2,10 @@ fishingmod.AddCatch{
 	cant_sell = true,
 	friendly = "Present",
 	type = "fishing_mod_catch_present",
-	rareness = 20000, 
-	yank = 100, 
-	force = 0, 
-	mindepth = 0, 
+	rareness = 20000,
+	yank = 100,
+	force = 0,
+	mindepth = 0,
 	maxdepth = 20000,
 	expgain = 50,
 	levelrequired = 0,
@@ -22,14 +22,10 @@ PrecacheParticleSystem("bday_confetti")
 
 if SERVER then
 	function ENT:Initialize()
-		local num = math.random(1,4)
-		self:SetModel("models/effects/bday_gib0"..num..".mdl")
+		self:SetModel("models/items/cs_gift.mdl")
 		self:PhysicsInit(SOLID_VPHYSICS)
 		self:SetMoveType(MOVETYPE_VPHYSICS)
 		self:SetSolid(SOLID_VPHYSICS)
-		
-		num = math.Round(math.random(0,1))
-		self:SetSkin(num)
 	end
 
 	function ENT:Use(ply)
