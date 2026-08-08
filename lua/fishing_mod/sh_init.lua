@@ -10,7 +10,7 @@ fishingmod.MaxReelSpeed = 100
 
 fishingmod.HookForcePrice = 600
 
-fishingmod.RebirthPrice = 1000000
+fishingmod.RebirthPrice = 100000
 
 local PLAYER = FindMetaTable("Player")
 
