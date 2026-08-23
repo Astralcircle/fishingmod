@@ -353,7 +353,14 @@ hook.Add("InitPostEntity", "FishingMod:SetSales", function()
 		badges.CreateBadge("fishingmod_diamond", "Fishingmod: Моя прелесть!", "Выловите алмаз")
 		badges.CreateBadge("fishingmod_upgrade", "Fishingmod: Обновка!", "Улучшите свою удочку")
 		badges.CreateBadge("fishingmod_cook", "Fishingmod: Шеф повар", "Приготовьте свой улов на выловленной плите и продайте его")
+		badges.CreateBadge("fishingmod_avidfisherman", "Fishingmod: Заядлый рыбак", "Выловите что-то 1000 раз", 1000)
 	end
+
+	hook.Add("Badges_GetProgress", "FishingMod_Badge", function(ply, id)
+		if id == "fishingmod_avidfisherman" then
+			return ply.fishingmod and ply.fishingmod.catches or 0
+		end
+	end)
 
 	fishingmod.SetRandomSale()
 end)

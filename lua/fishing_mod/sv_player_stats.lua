@@ -24,6 +24,11 @@ end
 function fishingmod.GainEXP(ply, amount)
 	ply.fishingmod.exp = ply.fishingmod.exp + amount
 	ply.fishingmod.catches = ply.fishingmod.catches + 1
+
+	if badges and ply.fishingmod.catches >= 1000 then
+		ply:AddBadge("fishingmod_avidfisherman")
+	end
+
 	fishingmod.SavePlayerInfo(ply, "exp", ply.fishingmod.exp)
 	fishingmod.SavePlayerInfo(ply, "catches", ply.fishingmod.catches)
 	fishingmod.UpdatePlayerInfo(ply)
