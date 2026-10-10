@@ -369,7 +369,7 @@ function PANEL:Init()
 	self.rebirth:SetType("Престиж:", "rebirth", "rebirth", fishingmod.RebirthPrice * rebirth_count)
 	self:AddItem(self.rebirth)
 
-	local click_old = self.rebirth.left.DoClick
+	local click_old = self.rebirth.right.DoClick
 
 	function self.rebirth.right:DoClick()
 		Derma_Query("Вы уверены что хотите потратить " .. fishingmod.RebirthPrice * rebirth_count .. ", потеряв весь прогресс\nчтобы получить постоянный множитель прибыли X" .. rebirth_count .. "?", "Подтверждение", "Да", function() if self:IsValid() then click_old(self) end end, "Нет", function() end)
