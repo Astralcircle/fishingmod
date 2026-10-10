@@ -364,9 +364,16 @@ function PANEL:Init()
 	self.force:SetType("Сила крюка:", "force", "hook_force", fishingmod.HookForcePrice)
 	self:AddItem(self.force)
 
+	local rebirth_count = LocalPlayer().fishingmod.rebirth + 1
 	self.rebirth = vgui.Create("Fishingmod:UpgradeButton", self)
-	self.rebirth:SetType("Престиж:", "rebirth", "rebirth", fishingmod.RebirthPrice * (LocalPlayer().fishingmod.rebirth + 1))
+	self.rebirth:SetType("Престиж:", "rebirth", "rebirth", fishingmod.RebirthPrice * rebirth_count)
 	self:AddItem(self.rebirth)
+
+	local click_old = self.rebirth.left.DoClick
+
+	function self.rebirth.right:DoClick()
+		Derma_Query("Вы уверены что хотите потратить " .. fishingmod.RebirthPrice * rebirth_count .. ", потеряв весь прогресс\nчтобы получить постоянный множитель прибыли X" .. rebirth_count .. "?", "Подтверждение", "Да", function() if self:IsValid() then click_old(self) end end, "Нет", function() end)
+	end
 end
 
 vgui.Register("Fishingmod:Upgrade", PANEL, "DPanelList")
