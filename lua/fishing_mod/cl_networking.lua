@@ -8,7 +8,7 @@ local function FriedToFriendly(number)
 	elseif number < 200 then
 		return "слабой прожарки"
 	elseif number < 300 then
-		return "среде-слабой прожарки"
+		return "средне-слабой прожарки"
 	elseif number < 500 then
 		return "средней прожарки"
 	elseif number < 600 then

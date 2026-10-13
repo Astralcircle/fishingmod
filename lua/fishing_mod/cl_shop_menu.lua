@@ -521,11 +521,14 @@ function PANEL:Init()
 	color_mixer:SetWangs(true)
 	color_mixer:SetPalette(false)
 	color_mixer:SetSize(x - 10 - 120 - 20, y - 20)
+	
 	function color_mixer:ValueChanged(col)
 		if editable and editable != "" and fishingmod.DefaultUIColors()[editable] then
 			fishingmod.ColorTable[editable] = Color(col.r, col.g, col.b, col.a)
+			fishingmod.RefreshHUDColors()
 		end
 	end
+
 	function combo_box.OnSelect(self, val, str)
 		if type(str)=="string" and str != "" then
 			editable = translation[str]
