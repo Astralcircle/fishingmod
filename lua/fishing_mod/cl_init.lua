@@ -1,4 +1,4 @@
---fishingmod = fishingmod or {}
+fishingmod = fishingmod or {}
 
 local color_white = color_white or Color(255, 255, 255, 255)
 
