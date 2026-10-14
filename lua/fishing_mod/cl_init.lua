@@ -37,9 +37,28 @@ surface.CreateFont("fixed_name_font", {
 	outline = false,
 })
 
+function fishingmod.RefreshHUDColors()
+	local defaults = fishingmod.DefaultUIColors()
+	local ct = fishingmod.ColorTable
+	if ct then
+		crosshair = ct.crosshair_color or defaults.crosshair_color
+		ui_text   = ct.ui_text         or defaults.ui_text
+		bg        = ct.ui_background   or defaults.ui_background
+	else
+		crosshair = defaults.crosshair_color
+		ui_text   = defaults.ui_text
+		bg        = defaults.ui_background
+	end
+end
+
 include("cl_networking.lua")
 include("cl_shop_menu.lua")
 fishingmod.ColorTable = fishingmod.LoadUIColors()
+
+local ui_text = fishingmod.DefaultUIColors().ui_text
+local bg = fishingmod.DefaultUIColors().ui_background
+local crosshair = fishingmod.DefaultUIColors().crosshair_color
+
 
 fishingmod.CatchTable = {}
 
@@ -78,16 +97,12 @@ hook.Add("InitPostEntity", "Init Fish Mod", function()
 	end
 
 end)
-local ui_text = fishingmod.DefaultUIColors().ui_text
-local bg = fishingmod.DefaultUIColors().ui_background
-local crosshair = fishingmod.DefaultUIColors().crosshair_color
+
+fishingmod.RefreshHUDColors()
+
 hook.Add( "HUDPaint", "Fishingmod:HUDPaint", function()
 	local entity = LocalPlayer():GetEyeTrace().Entity
-	if fishingmod.ColorTable then
-		crosshair = fishingmod.ColorTable.crosshair_color or fishingmod.DefaultUIColors().crosshair_color
-		ui_text = fishingmod.ColorTable.ui_text or fishingmod.DefaultUIColors().ui_text
-		bg = fishingmod.ColorTable.ui_background or fishingmod.DefaultUIColors().ui_background
-	end
+	
 	entity = IsValid(entity) and IsValid(entity:GetNWEntity("FMRedirect")) and entity:GetNWEntity("FMRedirect") or entity
 	if IsValid(entity) then
 		local xy = (entity:LocalToWorld(entity:OBBCenter())):ToScreen()
